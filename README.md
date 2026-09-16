@@ -1,82 +1,125 @@
-# LiveSplit SNES - Speedrun Timer & Practice Suite
+# ⏱️ LiveSplit SNES — Speedrun Timer & Practice Suite
 
-Aplicación de escritorio multiplataforma (macOS, Windows, Linux) para speedrunning de juegos de Super Nintendo (SNES) emulados, construida con **Tauri v2 (Rust)** y **React 19 + TypeScript + Tailwind CSS**.
+[![Release Builds](https://github.com/CarlosGaubert/LiveSplitSnes/actions/workflows/build.yml/badge.svg)](https://github.com/CarlosGaubert/LiveSplitSnes/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tauri](https://img.shields.io/badge/Tauri-v2-blue.svg?logo=tauri)](https://v2.tauri.app/)
+[![React](https://img.shields.io/badge/React-19-61dafb.svg?logo=react)](https://react.dev/)
+[![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey.svg)](https://github.com/CarlosGaubert/LiveSplitSnes/releases)
 
-Diseñada específicamente para ofrecer:
-- **Alta precisión y bajo consumo de recursos**: Sin la sobrecarga de Electron, con micro-pausas mínimas para no competir con el emulador ni la transmisión.
-- **Personalización visual extrema**: Soporte para fondos personalizados, opacidad graduable, efecto *backdrop blur* (acrílico/vidrio), ventanas transparentes y **Modo Chroma Key** para capturas en OBS Studio / Streamlabs.
-- **Módulo de Entrenamiento para ROMs (Practice Mode)**: Cronometraje de trucos y segmentos aislados, contador de consistencia (éxitos/intentos con cálculo de %), racha de aciertos y vinculación rápida con savestates del emulador (`LOAD_STATE`).
-- **Auto-Splitter para Emuladores SNES**: Conexión con protocolo WebSocket estándar de la comunidad (QUsb2snes, USB2SNES, RetroArch o modo simulación interactiva).
+A modern, high-precision, cross-platform desktop speedrun timer and practice suite tailored for emulated Super Nintendo (SNES) games, built with **Tauri v2 (Rust)** and **React 19 + TypeScript + Tailwind CSS**.
 
----
-
-## 🚀 Requisitos Previos
-
-- **Node.js** v18+ (recomendado Node 20 o superior).
-- **Rust** y **Cargo** (instalable con `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`).
+Designed from the ground up to eliminate Electron bloatware, ensure microsecond timing accuracy, provide an integrated **Practice Mode** with consistency tracking, and deliver full visual customizability for streaming in OBS Studio.
 
 ---
 
-## 📦 Ejecución y Desarrollo
+## ✨ Features
 
-### 1. Modo Navegador / Vista Previa Rápida
-Puedes probar y ajustar la interfaz directamente en el navegador con HMR:
+### 🏁 1. Core LiveSplit Timer
+- **Sub-centisecond Precision**: Ultra-smooth rendering without garbage collection jitter.
+- **Custom Fonts**: Choose between *Digital 7-Segment*, *8-Bit Pixel*, *Vintage CRT (VT323)*, and *Modern Clean Sans*.
+- **Real-time Delta Indicators**: Color-coded (+/-) deltas comparing current pace against Personal Best (PB).
+- **Gold Split Detection**: Celebratory gold particle animations when beating your all-time best segment time.
+- **Advanced Run Statistics**:
+  - **Sum of Best (SoB)**: Your theoretical fastest possible run.
+  - **Best Possible Time**: Dynamic projected finish based on your current run and remaining best segments.
+  - **Previous Segment Comparison**: Instant feedback on the segment just completed.
+- **Preconfigured Game Profiles**:
+  - *Super Mario World* (11 Exit / Any%)
+  - *Super Metroid* (Any%)
+  - *The Legend of Zelda: A Link to the Past* (Any% No Major Glitches)
+  - Full in-app editor to create games, add splits, or import/export JSON splits.
+
+---
+
+### 🎯 2. ROM Practice Mode (Trick & Segment Training)
+Practice isolated rooms, bosses, or difficult tricks without affecting your main PB run:
+- **Dedicated Segment Stopwatch**: Time individual tricks (e.g., *Bowser Fight 2-Cycle*, *Mockball*, *Hell Run*).
+- **Consistency Tracker**: Real-time success rate calculation (`Successes / Total Attempts %`).
+- **Streak Counter & Timeline**: Track consecutive successful attempts and view your last 20 attempts with visual success/fail badges.
+- **Savestate Trigger Integration**: One-click and hotkey (`L`) instant savestate reloading (`LOAD_STATE`) in your emulator.
+- **Visual Cue Notebook**: Save strategies, pixel alignments, and frame cues for each practice segment.
+
+---
+
+### 🎨 3. Visual Customization & OBS Overlay Mode
+- **Custom Backgrounds**: Select from curated themes (*Cyberpunk Grid*, *Retro Arcade*, *Super Metroid*, *Minimal Dark*) or load any custom image URL.
+- **Opacity & Backdrop Blur**: Adjustable background opacity (10%–100%) with acrylic/frosted glass blur.
+- **Chroma Key Mode**: Green Screen (`#00ff00`) or Magenta (`#ff00ff`) background mode for clean transparency capture in OBS Studio / Streamlabs.
+- **Frameless & Always-on-Top**: Borderless floating window that stays pinned above your emulator with a dedicated drag grip.
+
+---
+
+### 🔌 4. SNES Auto-Splitter Connectivity
+- Connects via WebSocket to standard speedrun emulator interfaces:
+  - **QUsb2snes / USB2SNES** (Default port `8080` for Snes9x, BizHawk, or flashcarts like FXPAK Pro).
+  - **RetroArch Network Interface** (UDP/WebSocket port `55355`).
+- **Interactive RAM Simulator Sandbox**: Test auto-split triggers (Game Start, Level Clear, Console Reset) directly inside the app without needing an emulator open.
+
+---
+
+## ⌨️ Global Hotkeys
+
+| Action | Hotkey |
+| :--- | :--- |
+| **Start / Split** (LiveSplit Mode) | `Space` |
+| **Pause / Resume** | `P` |
+| **Reset Run** | `R` |
+| **Undo Split** | `Backspace` |
+| **Start Practice Timer** | `Space` |
+| **Mark Practice Success** | `K` or `Space` |
+| **Quick Reset + Reload Savestate** | `L` |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Node.js** v18+ (Node 20+ recommended)
+- **Rust & Cargo** ([Install Rust](https://www.rust-lang.org/tools/install))
+
+### Installation
+
+Clone the repository and install dependencies:
 ```bash
-npm run dev
+git clone https://github.com/CarlosGaubert/LiveSplitSnes.git
+cd LiveSplitSnes
+npm install
 ```
-Abre en `http://localhost:1420`.
 
-### 2. Modo Escritorio Nativo con Tauri
-Para ejecutar la ventana de escritorio con soporte de transparencia nativa, fijado en pantalla (*Always on Top*), sin bordes y control de savestates:
+### Running in Development
+
 ```bash
+# Run web preview in browser (with fast HMR at http://localhost:1420)
+npm run dev
+
+# Run full native desktop app with Tauri (transparency & floating window)
 npm run tauri dev
 ```
 
-### 3. Compilar el Ejecutable para Distribución
-Para generar el instalador nativo (.app en macOS, .exe / .msi en Windows, .deb / AppImage en Linux):
+### Building for Production
+
+Compile standalone native installers for your current operating system:
 ```bash
 npm run tauri build
 ```
+The output installers will be generated under `src-tauri/target/release/bundle/`:
+- **macOS**: `.dmg` and `.app`
+- **Windows**: `.exe` (NSIS) and `.msi`
+- **Linux**: `.deb` and `.AppImage`
 
 ---
 
-## 🎮 Características Principales
+## 🏗️ Tech Stack
 
-### 1. Modo LiveSplit (Speedrun Completo)
-- Cronómetro con precisión de centésimas de segundo y fuentes seleccionables (Digital 7-segment, Pixel 8-bit, Retro CRT, Sans).
-- Indicadores Delta en tiempo real (+/- con código de colores según estés por delante o detrás de tu PB).
-- Detección de **Gold Splits** (mejores segmentos históricos) con animación de confeti dorado.
-- Métricas avanzadas en el pie de página: **Sum of Best (SoB)**, **Best Possible Time** y tiempo de segmento previo.
-- Perfiles de juegos precargados:
-  - *Super Mario World (11 Exit / Any%)*
-  - *Super Metroid (Any%)*
-  - *The Legend of Zelda: A Link to the Past (Any% NMG)*
-  - Editor visual para crear cualquier juego, añadir splits o importar/exportar archivos JSON.
-
-### 2. Módulo de Entrenamiento (Practice Mode)
-- Accede presionando la pestaña **Entrenamiento** en la cabecera.
-- **Cronómetro de Segmento / Truco**: Practica salas difíciles (ej. *Bowser Fight 2-cycle*, *Mockball*, *Hell Run*) sin alterar tus récords globales (PB).
-- **Medidor de Consistencia**: Registro del porcentaje de éxito (`éxitos / intentos`), rachas de aciertos continuos y línea de tiempo de los últimos intentos.
-- **Integración con Savestates**: Botón y atajo para cargar instantáneamente el savestate del slot configurado en el emulador (`LOAD_STATE`).
-- **Cuaderno de Cues y Setup**: Registra notas estratégicas y puntos de referencia visuales (cues) por cada truco.
-
-### 3. Personalización y Streaming (OBS)
-- **Fondos Predefinidos**: Cyberpunk Grid, Retro Neon, Super Metroid o Minimalista.
-- **Imagen de Fondo Personalizada**: Pega la URL de cualquier fondo o captura de juego.
-- **Opacidad y Blur**: Deslizadores para lograr transparencias translúcidas con desenfoque sobre el juego.
-- **Modo Chroma Key**: Activa fondos Verde o Magenta para capturar la ventana en OBS y remover el fondo con el filtro Chroma Key.
-- **Fijar Siempre Visible**: Botón de anclaje (*Pin*) para mantener la ventana sobre el emulador en todo momento.
+- **Desktop Framework**: [Tauri v2](https://v2.tauri.app/) (Rust)
+- **Frontend**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Effects**: [canvas-confetti](https://www.npmjs.com/package/canvas-confetti)
+- **CI / CD**: GitHub Actions with multiplatform matrix builds (macOS Apple Silicon, Linux, Windows)
 
 ---
 
-## ⌨️ Atajos de Teclado (Hotkeys)
+## 📄 License
 
-| Acción | Atajo |
-| :--- | :--- |
-| **Iniciar / Split** (Modo LiveSplit) | `Espacio` |
-| **Pausar / Reanudar** | `P` |
-| **Reiniciar Carrera** | `R` |
-| **Deshacer Split** | `Backspace` |
-| **Iniciar Cronómetro de Práctica** | `Espacio` |
-| **Marcar Intento Logrado (Éxito)** | `K` o `Espacio` |
-| **Reinicio Rápido + Cargar Savestate** | `L` |
+This project is licensed under the [MIT License](LICENSE).
